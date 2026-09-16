@@ -9,7 +9,7 @@ class Interpolator:
 
         self.interpolated_path_data = []
 
-        self.generate_all_splines(graby_points=2)
+        # self.generate_all_splines(graby_points=2)
 
     class InterpSetting:
         def __init__(self, setting_number):
