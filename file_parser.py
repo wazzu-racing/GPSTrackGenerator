@@ -34,43 +34,6 @@ class FileParser:
             self.segment_id = segment_id
             self.x, self.y = [], []
 
-    def parse_all_arcs(self):
-        for index, folder in enumerate(self.results):
-            curr_setting = self.Setting(index)
-            if os.listdir(self.folders[index]):
-                self.raw_path_data.append(curr_setting) # Each array is a setting
-            for file in folder:
-                curr_path = self.CarPath()
-                self.raw_path_data[-1].paths.append(curr_path) # Each array is another run
-                curr_file = open(file, "r")
-                reader = csv.reader(curr_file, delimiter=',')
-
-                segments, arcs = [], []
-                curr_segment_id, prev_segment_id = 0, 0
-                curr_segment = None
-                for index, line in enumerate(reader):
-                    if index == 0:
-                        continue
-
-                    curr_segment_id = int(line[0])
-                    if curr_segment_id != prev_segment_id:
-                        if curr_segment is not None:
-                            curr_segment.arcs = arcs
-                            segments.append(curr_segment)
-                            curr_segment = self.Segment(curr_segment_id)
-                            arcs = [self.Arc(int(line[1]), start_x=float(line[7]), start_y=float(line[8]),
-                                             end_x=float(line[9]), end_y=float(line[10]))]
-                        else:
-                            curr_segment = self.Segment(curr_segment_id)
-                            arcs.append(self.Arc(int(line[1]), start_x=float(line[7]), start_y=float(line[8]),
-                                                 end_x=float(line[9]), end_y=float(line[10])))
-                    else:
-                        arcs.append(self.Arc(int(line[1]), start_x=float(line[7]), start_y=float(line[8]),
-                                             end_x=float(line[9]), end_y=float(line[10])))
-                    prev_segment_id = curr_segment_id
-
-                self.raw_path_data[-1].paths[-1].segments = segments
-
     def parse_all_data(self, columns):
         # Take all file names and put them into dictionary self.files
         self.files = {}

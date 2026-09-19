@@ -9,7 +9,7 @@ class Interpolator:
 
         self.interpolated_path_data = []
 
-        # self.generate_all_splines(graby_points=2)
+        self.generate_all_splines(graby_points=2)
 
     class InterpSetting:
         def __init__(self, setting_number):
@@ -32,8 +32,6 @@ class Interpolator:
                 self.interpolated_path_data[-1].paths.append(self.InterpPath())
                 for segment_index in range(len(path.segments)-1):
                     # Grab the last points of the current segment and the starting points of the next segment.
-                    path.segments[segment_index].calculate_all_points()
-                    path.segments[segment_index+1].calculate_all_points()
                     points_x = path.segments[segment_index].x[-graby_points:]+path.segments[segment_index+1].x[:graby_points]
                     points_y = path.segments[segment_index].y[-graby_points:]+path.segments[segment_index+1].y[:graby_points]
                     # Calculate the differences between each x and y value.
