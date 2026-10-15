@@ -58,20 +58,24 @@ class Visualizer:
         canvas.get_tk_widget().pack()
         toolbar.update()
 
-        if interpolate:
-            for setting_index, setting in enumerate(self.interpolated_path_data):
-                for path in setting.paths:
-                    for segment in path.segments:
-                        ax.plot(segment.x, segment.y, color=self.colors[setting_index], alpha=0.5)
+        # if interpolate:
+        #     for setting_index, setting in enumerate(self.interpolated_path_data):
+        #         for path in setting.paths:
+        #             for segment in path.segments:
+        #                 ax.plot(segment.x, segment.y, color=self.colors[setting_index], alpha=0.5)
 
         legend = []
+        x, y = [], []
         for setting_index, setting in enumerate(self.raw_path_data):
             legend.append(Patch(facecolor=self.colors[setting_index], label=f"Setting {setting.setting_number}".split('/')[
                 -1]))
             for path in setting.paths:
                 for segment in path.segments:
-                    ax.plot(segment.x, segment.y, color=self.colors[setting_index])
+                    ax.scatter(segment.x, segment.y, color=self.colors[setting_index], s=10)
+                    x.extend(segment.x)
+                    y.extend(segment.y)
 
+        ax.set_aspect(aspect=1/np.cos(np.radians(np.average(y))), adjustable='box')
         ax.set_xlabel("Longitude")
         ax.set_ylabel("Latitude")
         ax.legend(handles=legend)
